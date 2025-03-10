@@ -39,6 +39,10 @@ angle::Result ContextImpl::endTiling(const gl::Context *context, GLbitfield pres
     return angle::Result::Stop;
 }
 
+angle::Result ContextImpl::get_vulkan_mem(const gl::Context *context, uint64_t* ret_value) {
+    return angle::Result::Continue;
+}
+
 angle::Result ContextImpl::onUnMakeCurrent(const gl::Context *context)
 {
     return angle::Result::Continue;

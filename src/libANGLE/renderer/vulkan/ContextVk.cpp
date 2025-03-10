@@ -42,6 +42,8 @@
 #include "libANGLE/renderer/vulkan/TransformFeedbackVk.h"
 #include "libANGLE/renderer/vulkan/VertexArrayVk.h"
 #include "libANGLE/renderer/vulkan/vk_renderer.h"
+#include "libANGLE/renderer/vulkan/vk_mem_alloc_wrapper.h"
+#include "third_party/vulkan/vk_mem_alloc.h"
 
 #include <fstream>
 #include <iostream>
@@ -1561,6 +1563,14 @@ angle::Result ContextVk::flush(const gl::Context *context)
         ANGLE_TRY(onFramebufferBoundary(context));
     }
 
+    return angle::Result::Continue;
+}
+
+angle::Result ContextVk::get_vulkan_mem(const gl::Context *context, uint64_t* ret_value) {
+    VmaAllocator allocator = this->getRenderer()->getAllocator().getHandle();
+    VmaBudget budget[VK_MAX_MEMORY_HEAPS];
+    vmaGetHeapBudgets(allocator, budget);
+    *ret_value = budget[0].usage;
     return angle::Result::Continue;
 }
 

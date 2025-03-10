@@ -1,0 +1,2 @@
+因为这个工程不能拉取根目录下third_party的内容，所以相关的修改放在当前文件夹下。
+vk_mem_alloc.h文件需要放置到   repo根目录\third_party\vulkan_memory_allocator\include下

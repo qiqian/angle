@@ -89,6 +89,7 @@ class ContextVk : public ContextImpl, public vk::Context, public MultisampleText
     // Flush and finish.
     angle::Result flush(const gl::Context *context) override;
     angle::Result finish(const gl::Context *context) override;
+    angle::Result get_vulkan_mem(const gl::Context *context, uint64_t* ret_value) override;
 
     // Drawing methods.
     angle::Result drawArrays(const gl::Context *context,

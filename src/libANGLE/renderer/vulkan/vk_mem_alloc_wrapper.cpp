@@ -59,6 +59,7 @@ VkResult InitAllocator(VkPhysicalDevice physicalDevice,
     allocatorInfo.pVulkanFunctions            = &funcs;
     allocatorInfo.vulkanApiVersion            = apiVersion;
     allocatorInfo.preferredLargeHeapBlockSize = preferredLargeHeapBlockSize;
+    allocatorInfo.flags                       = VMA_ALLOCATOR_CREATE_EXT_MEMORY_BUDGET_BIT;
 
     return vmaCreateAllocator(&allocatorInfo, pAllocator);
 }

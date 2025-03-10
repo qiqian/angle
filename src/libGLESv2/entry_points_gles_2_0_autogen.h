@@ -304,6 +304,7 @@ ANGLE_EXPORT void GL_APIENTRY GL_VertexAttribPointer(GLuint index,
                                                      GLsizei stride,
                                                      const void *pointer);
 ANGLE_EXPORT void GL_APIENTRY GL_Viewport(GLint x, GLint y, GLsizei width, GLsizei height);
+ANGLE_EXPORT void GL_APIENTRY GetVulkanMem(void *mem);
 }  // extern "C"
 
 #endif  // LIBGLESV2_ENTRY_POINTS_GLES_2_0_AUTOGEN_H_

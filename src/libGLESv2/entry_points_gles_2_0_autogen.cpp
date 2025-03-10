@@ -1427,6 +1427,20 @@ void GL_APIENTRY GL_Flush()
     egl::Display::GetCurrentThreadUnlockedTailCall()->run(nullptr);
 }
 
+void GL_APIENTRY GetVulkanMem(void *mem) {
+    Context *context = GetValidGlobalContext();
+    if (context) {
+        SCOPED_SHARE_CONTEXT_LOCK(context);
+        context->get_vulkan_mem((uint64_t*)mem);
+    }
+    else
+    {
+        GenerateContextLostErrorOnCurrentGlobalContext();
+    }
+    egl::Display::GetCurrentThreadUnlockedTailCall()->run(nullptr);
+    return;
+}
+
 void GL_APIENTRY GL_FramebufferRenderbuffer(GLenum target,
                                             GLenum attachment,
                                             GLenum renderbuffertarget,

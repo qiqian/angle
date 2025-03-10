@@ -596,6 +596,7 @@ class Context final : public egl::LabeledObject, angle::NonCopyable, public angl
     void deleteFramebuffer(FramebufferID framebuffer);
 
     bool hasActiveTransformFeedback(ShaderProgramID program) const;
+    void get_vulkan_mem(uint64_t* mem);
 
     // GLES entry point interface
     ANGLE_GLES_1_0_CONTEXT_API
