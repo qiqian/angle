@@ -1400,6 +1400,8 @@ const char *GetEntryPointName(EntryPoint ep)
             return "glHint";
         case EntryPoint::GLImportMemoryFdEXT:
             return "glImportMemoryFdEXT";
+        case EntryPoint::GLImportMemoryWin32HandleEXT:
+            return "glImportMemoryWin32HandleEXT";
         case EntryPoint::GLImportMemoryZirconHandleANGLE:
             return "glImportMemoryZirconHandleANGLE";
         case EntryPoint::GLImportSemaphoreFdEXT:

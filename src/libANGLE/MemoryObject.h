@@ -42,6 +42,7 @@ class MemoryObject final : public RefCountObject<MemoryObjectID>
     bool isProtectedMemory() const { return mProtectedMemory; }
 
     angle::Result importFd(Context *context, GLuint64 size, HandleType handleType, GLint fd);
+    angle::Result importHandle(Context *context, GLuint64 size, HandleType handleType, HANDLE hHandle);
     angle::Result importZirconHandle(Context *context,
                                      GLuint64 size,
                                      HandleType handleType,

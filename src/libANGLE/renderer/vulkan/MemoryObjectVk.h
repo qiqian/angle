@@ -26,6 +26,10 @@ class MemoryObjectVk : public MemoryObjectImpl
     angle::Result setDedicatedMemory(const gl::Context *context, bool dedicatedMemory) override;
     angle::Result setProtectedMemory(const gl::Context *context, bool protectedMemory) override;
 
+    angle::Result importHandle(gl::Context *context,
+                           GLuint64 size,
+                           gl::HandleType handleType,
+                           HANDLE handle) override;
     angle::Result importFd(gl::Context *context,
                            GLuint64 size,
                            gl::HandleType handleType,
@@ -51,7 +55,7 @@ class MemoryObjectVk : public MemoryObjectImpl
     static constexpr int kInvalidFd = -1;
     angle::Result importOpaqueFd(ContextVk *contextVk, GLuint64 size, GLint fd);
     angle::Result importZirconVmo(ContextVk *contextVk, GLuint64 size, GLuint handle);
-
+    angle::Result importWin32Handle(ContextVk *contextVk, GLuint64 size, HANDLE handle);
     // Imported memory object was a dedicated allocation.
     bool mDedicatedMemory = false;
     bool mProtectedMemory = false;
@@ -59,7 +63,7 @@ class MemoryObjectVk : public MemoryObjectImpl
     GLuint64 mSize             = 0;
     gl::HandleType mHandleType = gl::HandleType::InvalidEnum;
     int mFd                    = kInvalidFd;
-
+    HANDLE hHandle              = nullptr;
     zx_handle_t mZirconHandle = ZX_HANDLE_INVALID;
 };
 

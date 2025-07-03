@@ -197,6 +197,15 @@ GLint TextureImpl::getNativeID() const
     return 0;
 }
 
+void TextureImpl::setFrontGLtexID(GLuint id)
+{
+    UNREACHABLE();
+}
+GLuint TextureImpl::getFrontGLtexID()
+{
+    UNREACHABLE();
+    return 0;
+}
 GLenum TextureImpl::getColorReadFormat(const gl::Context *context)
 {
     UNREACHABLE();

@@ -179,6 +179,7 @@
                                     GLenum internalFormat, GLsizei width, GLsizei height,          \
                                     GLsizei depth, GLboolean fixedSampleLocations,                 \
                                     MemoryObjectID memoryPacked, GLuint64 offset);                 \
+    void importMemoryHandle(MemoryObjectID memoryPacked,GLuint64 size,HandleType handleTypePacked,HANDLE handle); \
     /* GL_EXT_memory_object_fd */                                                                  \
     void importMemoryFd(MemoryObjectID memoryPacked, GLuint64 size, HandleType handleTypePacked,   \
                         GLint fd);                                                                 \

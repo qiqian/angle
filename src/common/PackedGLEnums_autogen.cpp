@@ -721,6 +721,8 @@ HandleType FromGLenum<HandleType>(GLenum from)
             return HandleType::ZirconVmo;
         case GL_HANDLE_TYPE_ZIRCON_EVENT_ANGLE:
             return HandleType::ZirconEvent;
+        case GL_HANDLE_TYPE_OPAQUE_WIN32_EXT:
+            return HandleType::Opaque_WIN32;
         default:
             return HandleType::InvalidEnum;
     }

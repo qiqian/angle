@@ -4545,6 +4545,13 @@ void GL_APIENTRY glImportMemoryFdEXT(GLuint memory, GLuint64 size, GLenum handle
     return GL_ImportMemoryFdEXT(memory, size, handleType, fd);
 }
 
+void GL_APIENTRY glImportMemoryWin32HandleEXT(GLuint memory,
+                                              GLuint64 size,
+                                              GLenum handleType,
+                                              void *handle)
+{
+    return GL_ImportMemoryWin32HandleEXT(memory, size, handleType,handle);
+}
 // GL_EXT_multi_draw_indirect
 void GL_APIENTRY glMultiDrawArraysIndirectEXT(GLenum mode,
                                               const void *indirect,

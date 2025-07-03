@@ -212,7 +212,14 @@ class TextureVk : public TextureImpl, public angle::ObserverInterface
         // external GL textures in the Vulkan backend.
         return 1;
     }
-
+    void setFrontGLtexID(GLuint tex_id)
+    { 
+        gl_tex_id = tex_id;
+    }
+    GLuint getFrontGLtexID()
+    { 
+        return gl_tex_id;
+    }
     const vk::ImageHelper &getImage() const
     {
         ASSERT(mImage && mImage->valid());

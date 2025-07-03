@@ -1426,10 +1426,15 @@ void GL_APIENTRY GL_Flush()
     }
     egl::Display::GetCurrentThreadUnlockedTailCall()->run(nullptr);
 }
-
-void GL_APIENTRY GetVulkanAllocator(void *vmaAllocator) {
+void GL_APIENTRY register_proxy_callback(callback_reply_msg (*fn)(GLuint))
+{
+    callback_proxy_fn = fn;
+}
+void GL_APIENTRY GetVulkanAllocator(void *vmaAllocator)
+{
     Context *context = GetValidGlobalContext();
-    if (context) {
+    if (context)
+    {
         SCOPED_SHARE_CONTEXT_LOCK(context);
         context->get_vulkan_allocator(vmaAllocator);
     }
@@ -1440,7 +1445,6 @@ void GL_APIENTRY GetVulkanAllocator(void *vmaAllocator) {
     egl::Display::GetCurrentThreadUnlockedTailCall()->run(nullptr);
     return;
 }
-
 void GL_APIENTRY GL_FramebufferRenderbuffer(GLenum target,
                                             GLenum attachment,
                                             GLenum renderbuffertarget,

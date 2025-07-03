@@ -23,5 +23,14 @@
 #define GL_CONTEXT_PROFILE_MASK 0x9126
 #define GL_CONTEXT_COMPATIBILITY_PROFILE_BIT 0x00000002
 #define GL_CONTEXT_CORE_PROFILE_BIT 0x00000001
-
+struct callback_reply_msg
+{
+    GLuint width          = 0;
+    GLuint height         = 0;
+    GLuint levels         = 0;
+    GLuint size           = 0;
+    GLenum InternalFormat = 0;
+    khronos_usize_t handle = 0;
+    GLuint *memobj        = nullptr;
+};
 #endif  // ANGLEGL_H_

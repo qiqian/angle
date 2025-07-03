@@ -67,6 +67,8 @@ VkExternalMemoryHandleTypeFlagBits ToVulkanHandleType(gl::HandleType handleType)
             return VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_FD_BIT;
         case gl::HandleType::ZirconVmo:
             return VK_EXTERNAL_MEMORY_HANDLE_TYPE_ZIRCON_VMO_BIT_FUCHSIA;
+        case gl::HandleType::Opaque_WIN32:
+            return VK_EXTERNAL_MEMORY_HANDLE_TYPE_OPAQUE_WIN32_BIT;
         default:
             // Not a memory handle type.
             UNREACHABLE();
@@ -92,6 +94,11 @@ void MemoryObjectVk::onDestroy(const gl::Context *context)
     {
         CloseZirconVmo(mZirconHandle);
         mZirconHandle = ZX_HANDLE_INVALID;
+    }
+    if (hHandle != nullptr)
+    {
+        CloseHandle(hHandle);
+        hHandle = nullptr;
     }
 }
 
@@ -125,6 +132,24 @@ angle::Result MemoryObjectVk::importFd(gl::Context *context,
     }
 }
 
+angle::Result MemoryObjectVk::importHandle(gl::Context *context,
+                                       GLuint64 size,
+                                       gl::HandleType handleType,
+                                       HANDLE handle)
+{
+    ContextVk *contextVk = vk::GetImpl(context);
+
+    switch (handleType)
+    {
+        case gl::HandleType::Opaque_WIN32:
+            return importWin32Handle(contextVk, size, handle);
+
+        default:
+            UNREACHABLE();
+            return angle::Result::Stop;
+    }
+}
+
 angle::Result MemoryObjectVk::importZirconHandle(gl::Context *context,
                                                  GLuint64 size,
                                                  gl::HandleType handleType,
@@ -143,6 +168,16 @@ angle::Result MemoryObjectVk::importZirconHandle(gl::Context *context,
     }
 }
 
+angle::Result MemoryObjectVk::importWin32Handle(ContextVk *contextVk, GLuint64 size, HANDLE win_handle)
+{
+    ASSERT(mHandleType == gl::HandleType::InvalidEnum);
+    ASSERT(hHandle == nullptr);
+    ASSERT(win_handle != nullptr);
+    mHandleType = gl::HandleType::Opaque_WIN32;
+    hHandle     = win_handle;
+    mSize       = size;
+    return angle::Result::Continue;
+}
 angle::Result MemoryObjectVk::importOpaqueFd(ContextVk *contextVk, GLuint64 size, GLint fd)
 {
     ASSERT(mHandleType == gl::HandleType::InvalidEnum);
@@ -217,6 +252,7 @@ angle::Result MemoryObjectVk::createImage(ContextVk *contextVk,
 
     VkImportMemoryFdInfoKHR importMemoryFdInfo                         = {};
     VkImportMemoryZirconHandleInfoFUCHSIA importMemoryZirconHandleInfo = {};
+    VkImportMemoryWin32HandleInfoKHR importMemoryWin32Info             = {};
     switch (mHandleType)
     {
         case gl::HandleType::OpaqueFd:
@@ -236,6 +272,14 @@ angle::Result MemoryObjectVk::createImage(ContextVk *contextVk,
             ANGLE_TRY(
                 DuplicateZirconVmo(contextVk, mZirconHandle, &importMemoryZirconHandleInfo.handle));
             importMemoryInfo = &importMemoryZirconHandleInfo;
+            break;
+        case gl::HandleType::Opaque_WIN32:
+            ASSERT(hHandle != nullptr);
+            importMemoryWin32Info.sType      = VK_STRUCTURE_TYPE_IMPORT_MEMORY_WIN32_HANDLE_INFO_KHR;
+            importMemoryWin32Info.pNext      = importMemoryInfo;
+            importMemoryWin32Info.handleType = ToVulkanHandleType(mHandleType);
+            importMemoryWin32Info.handle     = hHandle;
+            importMemoryInfo                 = &importMemoryWin32Info;
             break;
         default:
             UNREACHABLE();

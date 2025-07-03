@@ -253,7 +253,7 @@ bool TextureState::isCubeComplete() const
 
 const ImageDesc &TextureState::getBaseLevelDesc() const
 {
-    ASSERT(mType != TextureType::CubeMap || isCubeComplete());
+    //ASSERT(mType != TextureType::CubeMap || isCubeComplete());
     return getImageDesc(getBaseImageTarget(), getEffectiveBaseLevel());
 }
 
@@ -801,7 +801,7 @@ Texture::Texture(rx::GLImplFactory *factory, TextureID id, TextureType type)
     {
         mTexture->setContentsObservers(&mBufferContentsObservers);
     }
-
+    mTexture->setFrontGLtexID(id.value);
     // Initially assume the implementation is dirty.
     mDirtyBits.set(DIRTY_BIT_IMPLEMENTATION);
 }

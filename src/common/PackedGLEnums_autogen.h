@@ -203,9 +203,10 @@ enum class HandleType : uint8_t
     OpaqueFd    = 0,
     ZirconVmo   = 1,
     ZirconEvent = 2,
+    Opaque_WIN32 = 3,
 
-    InvalidEnum = 3,
-    EnumCount   = 3,
+    InvalidEnum = 4,
+    EnumCount   = 4,
 };
 
 template <>

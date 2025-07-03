@@ -236,7 +236,8 @@ class TextureImpl : public FramebufferAttachmentObjectImpl
     virtual GLint getLevelMemorySize(gl::TextureTarget target, GLint level);
 
     virtual GLint getNativeID() const;
-
+    virtual void  setFrontGLtexID(GLuint id);
+    virtual GLuint getFrontGLtexID();
     virtual GLint getImageCompressionRate(const gl::Context *context);
     virtual GLint getFormatSupportedCompressionRates(const gl::Context *context,
                                                      GLenum internalformat,
@@ -276,6 +277,7 @@ class TextureImpl : public FramebufferAttachmentObjectImpl
     }
 
   protected:
+    GLuint gl_tex_id;
     const gl::TextureState &mState;
     gl::TextureBufferContentsObservers *mBufferContentsObservers = nullptr;
 };

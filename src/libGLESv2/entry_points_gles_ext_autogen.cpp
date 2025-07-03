@@ -7502,6 +7502,42 @@ void GL_APIENTRY GL_ImportMemoryFdEXT(GLuint memory, GLuint64 size, GLenum handl
     ASSERT(!egl::Display::GetCurrentThreadUnlockedTailCall()->any());
 }
 
+void GL_APIENTRY GL_ImportMemoryWin32HandleEXT(GLuint memory,
+                                               GLuint64 size,
+                                               GLenum handleType,
+                                               void* handle)
+{
+    ASSERT(!egl::Display::GetCurrentThreadUnlockedTailCall()->any());
+    Context *context = GetValidGlobalContext();
+    EVENT(context, GLImportMemoryWin32HandleEXT,
+          "context = %d, memory = %u, size = %llu, handleType = %s, handle = %d", CID(context), memory,
+          static_cast<unsigned long long>(size),
+          GLenumToString(GLESEnum::ExternalHandleType, handleType), handle);
+
+    if (context)
+    {
+        MemoryObjectID memoryPacked = PackParam<MemoryObjectID>(memory);
+        HandleType handleTypePacked = PackParam<HandleType>(handleType);
+        SCOPED_SHARE_CONTEXT_LOCK(context);
+        bool isCallValid =
+            (context->skipValidation() ||
+             (ValidatePixelLocalStorageInactive(context->getPrivateState(),
+                                                context->getMutableErrorSetForValidation(),
+                                                angle::EntryPoint::GLImportMemoryWin32HandleEXT)));//ValidateImportMemoryFdEXT(context, angle::EntryPoint::GLImportMemoryWin32HandleEXT,memoryPacked, size, handleTypePacked, handle)
+        if (isCallValid)
+        {
+            context->importMemoryHandle(memoryPacked, size, handleTypePacked, handle);
+        }
+        ANGLE_CAPTURE_GL(ImportWin32HandleEXT, isCallValid, context, memoryPacked, size,
+                         handleTypePacked, handle);
+    }
+    else
+    {
+        GenerateContextLostErrorOnCurrentGlobalContext();
+    }
+    ASSERT(!egl::Display::GetCurrentThreadUnlockedTailCall()->any());
+}
+
 // GL_EXT_multi_draw_indirect
 void GL_APIENTRY GL_MultiDrawArraysIndirectEXT(GLenum mode,
                                                const void *indirect,

@@ -1080,8 +1080,11 @@ ANGLE_EXPORT void GL_APIENTRY GL_ImportMemoryFdEXT(GLuint memory,
                                                    GLuint64 size,
                                                    GLenum handleType,
                                                    GLint fd);
-
-// GL_EXT_multi_draw_indirect
+ANGLE_EXPORT void GL_APIENTRY GL_ImportMemoryWin32HandleEXT(GLuint memory,
+                                                            GLuint64 size,
+                                                            GLenum handleType,
+                                                            void *handle);
+    // GL_EXT_multi_draw_indirect
 ANGLE_EXPORT void GL_APIENTRY GL_MultiDrawArraysIndirectEXT(GLenum mode,
                                                             const void *indirect,
                                                             GLsizei drawcount,

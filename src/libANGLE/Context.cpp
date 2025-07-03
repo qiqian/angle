@@ -8787,6 +8787,16 @@ void Context::importMemoryFd(MemoryObjectID memory, GLuint64 size, HandleType ha
     ANGLE_CONTEXT_TRY(memoryObject->importFd(this, size, handleType, fd));
 }
 
+void Context::importMemoryHandle(MemoryObjectID memory,
+                                 GLuint64 size,
+                                 HandleType handleType,
+                                 HANDLE handle)
+{
+    MemoryObject *memoryObject = getMemoryObject(memory);
+    ASSERT(memoryObject != nullptr);
+    ANGLE_CONTEXT_TRY(memoryObject->importHandle(this, size, handleType, handle));
+}
+
 void Context::texStorageMemFlags2D(TextureType target,
                                    GLsizei levels,
                                    GLenum internalFormat,

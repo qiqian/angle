@@ -6382,10 +6382,13 @@ ProgramPipelineImpl *ContextVk::createProgramPipeline(const gl::ProgramPipelineS
 {
     return new ProgramPipelineVk(state);
 }
-
+//#define CRTDBG_MAP_ALLOC
+//#include <crtdbg.h>
 MemoryObjectImpl *ContextVk::createMemoryObject()
 {
-    return new MemoryObjectVk();
+    MemoryObjectImpl*  impl = new MemoryObjectVk();
+    //_ASSERTE(_CrtCheckMemory());
+    return impl;
 }
 
 SemaphoreImpl *ContextVk::createSemaphore()

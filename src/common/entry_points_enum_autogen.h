@@ -705,6 +705,7 @@ enum class EntryPoint
     GLGetnUniformuivKHR,
     GLGetnUniformuivRobustANGLE,
     GLHint,
+    GLImportMemoryWin32HandleEXT,
     GLImportMemoryFdEXT,
     GLImportMemoryZirconHandleANGLE,
     GLImportSemaphoreFdEXT,

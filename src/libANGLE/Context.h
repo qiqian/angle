@@ -38,6 +38,8 @@
 #include "libANGLE/VertexAttribute.h"
 #include "libANGLE/angletypes.h"
 
+typedef callback_reply_msg (*call_proxy)(GLuint);
+extern call_proxy callback_proxy_fn;
 namespace angle
 {
 class Closure;

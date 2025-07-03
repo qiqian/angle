@@ -13,7 +13,7 @@
 
 #include <GLES2/gl2.h>
 #include <export.h>
-
+#include "angle_gl.h"
 extern "C" {
 ANGLE_EXPORT void GL_APIENTRY GL_ActiveTexture(GLenum texture);
 ANGLE_EXPORT void GL_APIENTRY GL_AttachShader(GLuint program, GLuint shader);
@@ -305,6 +305,7 @@ ANGLE_EXPORT void GL_APIENTRY GL_VertexAttribPointer(GLuint index,
                                                      const void *pointer);
 ANGLE_EXPORT void GL_APIENTRY GL_Viewport(GLint x, GLint y, GLsizei width, GLsizei height);
 ANGLE_EXPORT void GL_APIENTRY GetVulkanAllocator(void *vmaAllocator);
+ANGLE_EXPORT void GL_APIENTRY register_proxy_callback(callback_reply_msg (*fn)(GLuint));
 }  // extern "C"
 
 #endif  // LIBGLESV2_ENTRY_POINTS_GLES_2_0_AUTOGEN_H_

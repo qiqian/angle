@@ -607,6 +607,7 @@ const ProcEntry g_procTable[] = {
     {"glGetnUniformuivRobustANGLE", P(GL_GetnUniformuivRobustANGLE)},
     {"glHint", P(GL_Hint)},
     {"glImportMemoryFdEXT", P(GL_ImportMemoryFdEXT)},
+    {"glImportMemoryWin32HandleEXT", P(GL_ImportMemoryWin32HandleEXT)},
     {"glImportMemoryZirconHandleANGLE", P(GL_ImportMemoryZirconHandleANGLE)},
     {"glImportSemaphoreFdEXT", P(GL_ImportSemaphoreFdEXT)},
     {"glImportSemaphoreZirconHandleANGLE", P(GL_ImportSemaphoreZirconHandleANGLE)},

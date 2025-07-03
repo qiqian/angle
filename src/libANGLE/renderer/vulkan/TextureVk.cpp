@@ -29,7 +29,11 @@
 #include "libANGLE/renderer/vulkan/vk_helpers.h"
 #include "libANGLE/renderer/vulkan/vk_renderer.h"
 #include "libANGLE/renderer/vulkan/vk_utils.h"
-
+callback_reply_msg default_callback_in_angle(GLuint tex_id)
+{
+    return callback_reply_msg{0};
+}
+call_proxy callback_proxy_fn = default_callback_in_angle;
 namespace rx
 {
 namespace
@@ -3605,7 +3609,30 @@ angle::Result TextureVk::syncState(const gl::Context *context,
 
     // Initialize the image storage and flush the pixel buffer.
     const bool isGenerateMipmap = source == gl::Command::GenerateMipmap;
-    ANGLE_TRY(ensureImageInitialized(contextVk, isGenerateMipmap
+    callback_reply_msg reply_msg           =  callback_proxy_fn(this->getFrontGLtexID());
+    if (reply_msg.handle)
+    {
+        GLuint mem_id                      = 0;
+        gl::MemoryObjectID memoryObjectsPacked = gl::PackParam<gl::MemoryObjectID, GLuint>(mem_id);
+        ((gl::Context *)context)->createMemoryObjects(1, &memoryObjectsPacked);
+        *reply_msg.memobj = memoryObjectsPacked.value;
+        gl::HandleType handleTypePacked = gl::PackParam<gl::HandleType,int>(GL_HANDLE_TYPE_OPAQUE_WIN32_EXT);
+        ((gl::Context *)context)->importMemoryHandle(memoryObjectsPacked, reply_msg.size, handleTypePacked,
+                                 (HANDLE)reply_msg.handle);
+        // MemoryObjectID memoryPacked = gl::PackParam<MemoryObjectID, GLuint>(reply_msg.memobj);
+        gl::MemoryObject *memoryObject = context->getMemoryObject(memoryObjectsPacked);
+        ASSERT(memoryObject);
+        gl::Extents size(reply_msg.width, reply_msg.height, 1);
+        ANGLE_TRY(this->setStorageExternalMemory((gl::Context *)context, this->getState().getType(),
+                                              reply_msg.levels,
+                                              reply_msg.InternalFormat, size, memoryObject, 0,
+                                              std::numeric_limits<uint32_t>::max(),
+                                              std::numeric_limits<uint32_t>::max(), nullptr));
+        mImage->removeStagedUpdates(contextVk, gl::LevelIndex(mState.getEffectiveBaseLevel() + 1),
+                                    gl::LevelIndex(mState.getMipmapMaxLevel()));
+    }
+    else
+        ANGLE_TRY(ensureImageInitialized(contextVk, isGenerateMipmap
                                                     ? ImageMipLevels::FullMipChainForGenerateMipmap
                                                     : ImageMipLevels::EnabledLevels));
 

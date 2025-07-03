@@ -53,6 +53,16 @@ angle::Result MemoryObject::importFd(Context *context,
     return angle::Result::Continue;
 }
 
+angle::Result MemoryObject::importHandle(Context *context,
+                                     GLuint64 size,
+                                     HandleType handleType,
+                                     HANDLE hHandle)
+{
+    ANGLE_TRY(mImplementation->importHandle(context, size, handleType, hHandle));
+    mImmutable = true;
+    return angle::Result::Continue;
+}
+
 angle::Result MemoryObject::importZirconHandle(Context *context,
                                                GLuint64 size,
                                                HandleType handleType,
